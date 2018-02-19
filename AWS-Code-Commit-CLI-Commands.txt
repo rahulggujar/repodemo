@@ -1,0 +1,200 @@
+aws codecommit create-repository --repository-name SecondDemoRepo --repository-description "My test Demo Repo from CLI"
+
+aws codecommit list-repositories -- To list all Repositories
+
+aws codecommit get-repository --repository-name <Repository Name>
+
+aws codecommit batch-get-repositories --repository-names <Repository 1> <Repository 2>
+
+aws codecommit update-repository-name --old-name <Old-Repo-Name> --new-name <New Repository Name>
+
+aws codecommit update-repository-description --repository-name <Repository Name> --repository-description "Give a description"
+
+
+aws codecommit delete-repository --repository-name <Repository Name> [To delete the repository]
+
+
+Cloning Repositories, Commits, Push, and Pulls
+==========================================
+
+Base Required Attributes & Syntax:
+git clone <repository URL> <local repository name>
+
+Example: git clone https://git-codecommit.ap-south-1.amazonaws.com/v1/repos/DemoRepo localprogram
+
+Using Commits
+================
+
+Definition:
+
+A Commit stores changes you have made to the repository, and
+allows you to sync those changes at a time of your choosing.
+
+Related Base Commands:
+
+git add (adds a file to a commit)
+git rm (removes a files from a commit)
+git status (view files that have been added to the commit)
+git commit (finalize the commit)
+
+Base Required Attributes & Syntax:
+
+git add <file name>
+git rm --cached <file name>
+
+Common Optional Flags:
+
+git commit -m (Add a description to the commit)
+git status -sb (View what has/hasn’t been added to the
+pending commit in a concise format)
+
+Pushing a Commit
+===============
+
+Definition:
+Pushing a commit is how you sync your changes with the
+central repository.
+
+Related Base Commands:
+
+git remote (view remote name)
+git branch (view branch name)
+git diff --stat (view which files will be pushed)
+git push (push the commit to the central repository)
+
+Base Required Attributes & Syntax:
+git diff --stat <remote-name>/<branch-name>
+git push <remote-name> <branch-name>
+
+Remote Name:
+The “nickname” the local repo uses for the central repository.
+
+Branch Name:
+The name of the branch you want to push the commit to.
+
+Examples:
+git remote
+git branch
+git diff --stat origin/master
+git push origin master
+
+Pulling Updates
+
+Definition:
+Pulling downloads all the changes that have occurred in the
+central repository since your last sync (clone or pull).
+
+Base Commands:
+git pull
+
+Base Required Attributes & Syntax:
+git pull <remote-name> <branch-name>
+
+Example:
+git pull origin master
+
+Conflicts
+==========
+
+Definition:
+Conflicts occur when two or more users push a commit that has
+edits to the same line in a specific file.
+
+HEAD Pointer:
+Refers to the most recent commit on the current branch. When
+you change branches, HEAD is updated to refer to the new
+branch’s latest commit.
+
+Commit ID #:
+Hexadecimal number that identifies a commit
+Long form: f5c5cac0033439c17ebf905d4391dc0705dbd5f1
+Short form: f5c5cac
+
+Branches
+A branch represents an independent line of development.
+Working on a branch (instead of on master), allows developers
+to safely make changes without disrupting the code on the
+master branch.
+
+Common examples of when branches are used:
+Building a new feature
+Fixing a bug
+
+Master: Production Code
+Branch: Development Code
+
+Managing Local Branches:
+Create
+View
+Switch
+Merge
+Delete
+
+View/Change Branch
+======================
+
+Base Related Commands:
+
+git branch (list local branches)
+git branch -r (list your remote branches)
+git checkout (switch to another branch)
+
+Base Required Attributes & Syntax:
+git checkout <new branch name>
+
+Examples:
+git branch
+git branch -r
+git checkout master
+
+Merging a Branch
+================
+
+Base Related Command:
+git merge
+
+Base Required Attributes & Syntax:
+git merge <branch name to merge>
+
+Example:
+git merge new_feature
+
+Deleting a Branch
+=================
+
+Base Related Command:
+
+git branch -d (deletes a branch in the local repo unless it
+contains work that has not been merged)
+
+Base Required Attributes & Syntax:
+git branch -d <branch name>
+
+Example:
+git branch -d new_feature
+
+
+Trigger JSON file “Events” list:
+========================
+
+all (all events in the repository)
+updateReference (push occurred)
+createReference (branch or tag created)
+deleteReference (branch or tag deleted)
+
+For creating, pushing, and viewing triggers – we will use
+AWS CLI commands NOT Git commands
+
+Based Required Attributes & Syntax:
+
+Test Trigger before pushing it:
+aws codecommit test-repository-triggers --cli-input-json file://<JSON file>
+
+Push Trigger to the Repository:
+aws codecommit put-repository-triggers --cli-input-json file://<JSON file>
+
+View Triggers in the Repository:
+aws codecommit get-repository-triggers --repository-name <Repo Name>
+
+arn:aws:iam::298780848515:role/CodeDeployServiceRole
+
